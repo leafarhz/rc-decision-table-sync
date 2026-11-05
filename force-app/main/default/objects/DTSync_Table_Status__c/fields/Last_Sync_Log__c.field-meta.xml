@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Sync_Log__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Last Sync Log</label>
+    <referenceTo>DTSync_Log__c</referenceTo>
+    <relationshipLabel>Table Statuses</relationshipLabel>
+    <relationshipName>Table_Statuses</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

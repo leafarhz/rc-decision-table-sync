@@ -1,0 +1,71 @@
+<template>
+    <lightning-card title="Decision Table Sync" icon-name="standard:decision">
+        <div slot="actions">
+            <lightning-button-group>
+                <lightning-button label="Reload" icon-name="utility:refresh" onclick={loadAll}></lightning-button>
+                <lightning-button variant="brand" label="Sync all tables" onclick={handleSyncAll} disabled={isBusy}></lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="slds-p-horizontal_medium">
+            <template lwc:if={jobMessage}>
+                <div class="slds-box slds-theme_shade slds-m-bottom_small">
+                    <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    {jobMessage}
+                </div>
+            </template>
+
+            <h2 class="slds-text-heading_small slds-m-bottom_x-small">Tables</h2>
+            <template lwc:if={tables.length}>
+                <lightning-datatable
+                    key-field="apiName"
+                    data={tables}
+                    columns={tableColumns}
+                    hide-checkbox-column
+                    onrowaction={handleRowAction}>
+                </lightning-datatable>
+            </template>
+            <template lwc:else>
+                <p class="slds-text-color_weak slds-p-vertical_small">
+                    No active tables. Add rows to the Decision Table Sync Table custom metadata type.
+                </p>
+            </template>
+
+            <h2 class="slds-text-heading_small slds-m-top_large slds-m-bottom_x-small">Schedule</h2>
+            <div class="slds-grid slds-wrap slds-gutters_x-small slds-grid_vertical-align-end">
+                <div class="slds-col">
+                    <lightning-combobox
+                        name="preset"
+                        label="Run"
+                        value={cronExpression}
+                        options={presets}
+                        onchange={handlePreset}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col">
+                    <lightning-input
+                        name="cron"
+                        label="Cron expression"
+                        value={cronExpression}
+                        onchange={handleCron}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-grow-none">
+                    <lightning-button label="Save schedule" onclick={handleSaveSchedule} disabled={isBusy}></lightning-button>
+                </div>
+                <div class="slds-col slds-grow-none">
+                    <lightning-button label="Turn off" variant="destructive-text" onclick={handleDisableSchedule} disabled={noSchedule}></lightning-button>
+                </div>
+            </div>
+            <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">{scheduleSummary}</p>
+
+            <h2 class="slds-text-heading_small slds-m-top_large slds-m-bottom_x-small">History</h2>
+            <lightning-datatable
+                key-field="Id"
+                data={history}
+                columns={historyColumns}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>
